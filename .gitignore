@@ -1,1 +1,10 @@
 /target
+
+# Generated Artifacts
+node_modules/
+dist/
+build/
+venv/
+__pycache__/
+*.log
+.DS_Store
