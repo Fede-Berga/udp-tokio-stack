@@ -92,7 +92,7 @@ A `Ping` is 20 bytes and the broadcast message 35. There is no framing, version 
 cargo test
 ```
 
-The single integration test ([`tests/integration_test.rs`](tests/integration_test.rs)) binds an inline echo socket on `127.0.0.1:19000`, sends an encoded `Ping` and checks that the reply carries the same id. It exercises the message encoding over a real socket; it does not start the server binary or call `handle_message`, and broadcast and multicast have no automated tests. CI runs `cargo fmt --check`, `cargo clippy`, `cargo test` and `cargo deny check bans licenses sources` on Ubuntu 24.04; security advisories are tracked by Dependabot.
+The single integration test ([`tests/integration_test.rs`](tests/integration_test.rs)) binds an inline echo socket on `127.0.0.1:19000`, sends an encoded `Ping` and checks that the reply carries the same id. It exercises the message encoding over a real socket; it does not start the server binary or call `handle_message`, and broadcast and multicast have no automated tests. CI runs `cargo fmt --check`, `cargo clippy`, `cargo test` and `cargo deny check bans licenses sources` on Ubuntu 24.04, plus a non-blocking `cargo deny check advisories` job; Dependabot opens the security updates.
 
 ## Design decisions and limitations
 
