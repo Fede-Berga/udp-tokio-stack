@@ -1,14 +1,14 @@
 // src/bin/server.rs
-use udp_tokio_stack::proto::Message;
-use udp_tokio_stack::service::handle_message;
-use udp_tokio_stack::{make_multicast_socket, make_broadcast_socket};
-use tokio::net::UdpSocket;
 use anyhow::Result;
 use clap::Parser;
 use std::net::Ipv4Addr;
-use tracing::{info, error, warn};
-use tokio::signal;
 use std::sync::Arc;
+use tokio::net::UdpSocket;
+use tokio::signal;
+use tracing::{error, info, warn};
+use udp_tokio_stack::proto::Message;
+use udp_tokio_stack::service::handle_message;
+use udp_tokio_stack::{make_broadcast_socket, make_multicast_socket};
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -53,7 +53,10 @@ async fn main() -> Result<()> {
 
     // Multicast
     let mcast_addr = format!("0.0.0.0:{}", args.mcast_port);
-    let group: Ipv4Addr = args.mcast_group.parse().expect("Invalid multicast group IPv4");
+    let group: Ipv4Addr = args
+        .mcast_group
+        .parse()
+        .expect("Invalid multicast group IPv4");
     let interface = Ipv4Addr::new(0, 0, 0, 0);
     let multicast = make_multicast_socket(&mcast_addr, group, interface)?;
     info!("Multicast listener on {} group {}", mcast_addr, group);
@@ -77,7 +80,7 @@ async fn main() -> Result<()> {
     s1.abort();
     s2.abort();
     s3.abort();
-    
+
     Ok(())
 }
 
@@ -92,7 +95,7 @@ async fn run_socket(socket: UdpSocket, label: String) {
                     Ok(msg) => {
                         info!(%label, ?src, "Received message");
                         let sock = socket.clone();
-                         tokio::spawn(async move {
+                        tokio::spawn(async move {
                             if let Ok(reply) = handle_message(msg).await {
                                 if let Ok(bytes) = bincode::serialize(&reply) {
                                     if let Err(e) = sock.send_to(&bytes, &src).await {

@@ -1,10 +1,10 @@
 // tests/integration_test.rs
-use tokio::time::{timeout, Duration};
-use udp_tokio_stack::proto::{Message, MessageKind};
-use bincode;
 use anyhow::Result;
-use tokio::net::UdpSocket;
+use bincode;
 use std::sync::Once;
+use tokio::net::UdpSocket;
+use tokio::time::{Duration, timeout};
+use udp_tokio_stack::proto::{Message, MessageKind};
 
 static INIT: Once = Once::new();
 

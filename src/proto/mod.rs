@@ -17,7 +17,10 @@ pub struct Message {
 
 impl Message {
     pub fn new(id: u64, kind: MessageKind, data: impl Into<Vec<u8>>) -> Self {
-        Self { id, kind, data: data.into() }
+        Self {
+            id,
+            kind,
+            data: data.into(),
+        }
     }
 }
-
